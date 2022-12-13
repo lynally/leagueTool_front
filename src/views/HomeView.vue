@@ -1,9 +1,11 @@
 <template>
   <main>
-    <el-button>主页</el-button>
+    <GameList></GameList>
   </main>
 </template>
 
-<script setup></script>
+<script setup>
+import GameList from "@/components/GameList.vue";
+</script>
 
 <style scoped></style>
