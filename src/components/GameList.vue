@@ -63,7 +63,7 @@ async function deleteLeague(id) {
     ElMessage.error(msg);
     return;
   }
-  getList();
+  // getList();
 }
 
 function addGame(gameId) {
@@ -71,7 +71,7 @@ function addGame(gameId) {
 }
 
 onMounted(() => {
-  getList();
+  // getList();
 });
 </script>
 
