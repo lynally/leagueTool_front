@@ -33,13 +33,13 @@
         </el-row>
       </template>
     </div>
-    <div>
-      <p class="foot">
-        备案号：<a href="http://beian.miit.gov.cn/" target="_blank"
-          >冀ICP备2023002072号-1</a
-        >
-      </p>
-    </div>
+    <!--    <div>-->
+    <!--      <p class="foot">-->
+    <!--        备案号：<a href="http://beian.miit.gov.cn/" target="_blank"-->
+    <!--          >冀ICP备2023002072号-1</a-->
+    <!--        >-->
+    <!--      </p>-->
+    <!--    </div>-->
   </el-card>
 </template>
 
