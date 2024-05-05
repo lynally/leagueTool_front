@@ -1,7 +1,9 @@
 <template>
   <div class="gameSet">
     <div style="display: flex;justify-content: space-between">
-      <h1>联赛设置</h1>
+      <div style="display: flex;align-items: center;">
+        <h1>联赛设置</h1>  <span>（单循环赛制）</span>
+      </div>
       <el-button @click="back">返回</el-button>
     </div>
     <el-form
@@ -10,7 +12,6 @@
       :rules="rules"
       label-width="auto"
       class="demo-ruleForm"
-      :size="formSize"
       status-icon
     >
       <el-form-item label="联赛名称" prop="name">
@@ -18,7 +19,7 @@
       </el-form-item>
       <el-form-item label="球队设置" prop="teams">
           <el-col v-for="(team,index) in ruleForm.teams" :key="index" >
-            <el-form-item :prop='"team"+index' style="width: 600px" >
+            <el-form-item :prop='"team"+index'  >
               <div style="display:flex;justify-content: space-between">
                 <el-input class="" v-model="team.value" placeholder="球队名称"></el-input>
                 <el-button style="margin-left: 10px" :icon="Close"  @click="delTeam(index)"/>
@@ -35,7 +36,7 @@
             <el-date-picker
                 v-model="ruleForm.startDate"
                 type="date"
-                label="选择开始日期"
+                aria-label="选择开始日期"
                 placeholder="选择开始日期"
                 format="YYYY/MM/DD"
                 value-format="x"
@@ -44,20 +45,20 @@
           </el-form-item>
         </el-col>
       </el-form-item>
-      <el-form-item label="星期设置" prop="weeks">
+      <el-form-item label="开赛星期" prop="weeks">
         <el-checkbox-group v-model="ruleForm.weeks">
-          <el-checkbox :label="1" >星期一</el-checkbox>
-          <el-checkbox :label="2" >星期二</el-checkbox>
-          <el-checkbox :label="3" >星期三</el-checkbox>
-          <el-checkbox :label="4" >星期四</el-checkbox>
-          <el-checkbox :label="5" >星期五</el-checkbox>
-          <el-checkbox :label="6" >星期六</el-checkbox>
-          <el-checkbox :label="0" >星期日</el-checkbox>
+          <el-checkbox :value="1" >星期一</el-checkbox>
+          <el-checkbox :value="2" >星期二</el-checkbox>
+          <el-checkbox :value="3" >星期三</el-checkbox>
+          <el-checkbox :value="4" >星期四</el-checkbox>
+          <el-checkbox :value="5" >星期五</el-checkbox>
+          <el-checkbox :value="6" >星期六</el-checkbox>
+          <el-checkbox :value="0" >星期日</el-checkbox>
         </el-checkbox-group>
       </el-form-item>
-      <el-form-item label="时间设置" required>
+      <el-form-item label="开赛时间" required>
         <el-col  v-for="(time,index) in ruleForm.times" :key="index" >
-          <el-form-item :prop='"time"+index' style="width: 600px">
+          <el-form-item :prop='"time"+index' >
             <el-time-picker
                 v-model="time.value"
                 is-range
@@ -67,12 +68,12 @@
                 end-placeholder="结束"
                 value-format="x"
             />
-            <el-button style="margin-left: 10px" :icon="Close" @click="delTime(index)" />
+            <el-button  :icon="Close" @click="delTime(index)" />
           </el-form-item>
         </el-col>
         <el-col >
 
-          <el-button type="primary" @click="addTime">添加时间</el-button>
+          <el-button type="primary" @click="addTime">增加场次</el-button>
         </el-col>
       </el-form-item>
 
@@ -100,20 +101,26 @@
 </template>
 
 <script setup lang="ts">
+
 import { reactive, ref,onMounted } from 'vue'
 import { useRoute } from "vue-router";
 import router from "../router/index";
 import { FormInstance, FormRules } from 'element-plus'
-import {Close} from '@element-plus/icons-vue'
-import {addLeague, getLeagueInfo, getVsTable, updateLeague} from '../api/api.js'
+import { useAppStoreHook } from "../store/modules/app.js";
+
 import { ElMessage } from 'element-plus'
 import FileSaver from 'file-saver';
 import * as XLSX from 'xlsx';
 
+import {Close} from '@element-plus/icons-vue'
+
 let route = useRoute();
+
+const appStore = useAppStoreHook();
+const {addLeague, getLeagueInfo, getVsTable, updateLeague} = appStore
+
 const gameId = ref(route.query.gameId)
 
-const formSize = ref('default')
 const ruleFormRef = ref<FormInstance>()
 let ruleForm = reactive({
   name: '',
@@ -170,11 +177,11 @@ onMounted(()=>{
     getInfo();
   }
 })
-async function getInfo(){
-  const {code,data,msg} = await getLeagueInfo({id:gameId.value})
+function getInfo(){
+  const {code,data,msg} =  getLeagueInfo({id:gameId.value})
   if(code === 200){
     console.log('联赛信息',data)
-    ruleForm.id = data._id;
+    ruleForm.id = data.id;
     ruleForm.name = data.name;
     ruleForm.startDate = data.startDateValue;
     ruleForm.teams = data.teams.map((name)=>{
@@ -202,9 +209,9 @@ const submitForm = async (formEl: FormInstance | undefined) => {
     }
   })
 }
-const addGame = async ()=>{
+const addGame =  ()=>{
   const fn = gameId.value?updateLeague:addLeague
-  const {code,msg} = await fn(
+  const {code,msg} =  fn(
       {
         id:ruleForm.id,
         name:ruleForm.name,
@@ -239,13 +246,13 @@ function delTime (index){
 let tableHead = ref([])
 let tableData = ref([])
 
-async function createVs(){
+function createVs(){
   const id = gameId.value
   if(!id){
     ElMessage.error('先创建一个联赛')
     return
   }
-  const {code,data,msg} = await getVsTable({id:id})
+  const {code,data,msg} =  getVsTable({id:id})
   tableData.value =data.data;
   tableHead.value = data.head;
 
@@ -278,7 +285,7 @@ function exportDownloadClick(){
 
 <style scoped lang="scss">
 .gameSet {
-  height: 100%;
+  height: 100vh;
   background-color: #ccc;
   padding: 20px;
   h1{

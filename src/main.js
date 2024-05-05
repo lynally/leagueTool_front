@@ -1,4 +1,5 @@
 import { createApp } from "vue";
+import { setupStore } from "@/store";
 import App from "./App.vue";
 import router from "./router";
 
@@ -10,6 +11,8 @@ import "element-plus/dist/index.css";
 const app = createApp(App);
 
 app.use(router);
+
+setupStore(app);
 app.use(ElementPlus);
 
 app.mount("#app");

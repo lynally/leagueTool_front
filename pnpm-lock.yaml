@@ -6,10 +6,12 @@ specifiers:
   '@vitejs/plugin-vue': ^3.2.0
   '@vue/eslint-config-prettier': ^7.0.0
   axios: ^1.2.1
+  dayjs: ^1.11.11
   element-plus: ^2.2.26
   eslint: ^8.22.0
   eslint-plugin-vue: ^9.3.0
   file-saver: ^2.0.5
+  pinia: ^2.1.7
   prettier: ^2.7.1
   qs: ^6.11.0
   sass: ^1.56.2
@@ -22,8 +24,10 @@ specifiers:
 dependencies:
   '@element-plus/icons-vue': 2.3.1_vue@3.4.26
   axios: 1.6.8
+  dayjs: 1.11.11
   element-plus: 2.7.2_vue@3.4.26
   file-saver: 2.0.5
+  pinia: 2.1.7_4w4ehlfe25r47n4z3hvjzw4vgy
   qs: 6.12.1
   vue: 3.4.26_typescript@4.9.5
   vue-router: 4.3.2_vue@3.4.26
@@ -1419,6 +1423,24 @@ packages:
     resolution: {integrity: sha512-JU3teHTNjmE2VCGFzuY8EXzCDVwEqB2a8fsIvwaStHhAWJEeVd1o1QD80CU6+ZdEXXSLbSsuLwJjkCBWqRQUVA==}
     engines: {node: '>=8.6'}
     dev: true
+
+  /pinia/2.1.7_4w4ehlfe25r47n4z3hvjzw4vgy:
+    resolution: {integrity: sha512-+C2AHFtcFqjPih0zpYuvof37SFxMQ7OEG2zV9jRI12i9BOy3YQVAHwdKtyyc8pDcDyIc33WCIsZaCFWU7WWxGQ==}
+    peerDependencies:
+      '@vue/composition-api': ^1.4.0
+      typescript: '>=4.4.4'
+      vue: ^2.6.14 || ^3.3.0
+    peerDependenciesMeta:
+      '@vue/composition-api':
+        optional: true
+      typescript:
+        optional: true
+    dependencies:
+      '@vue/devtools-api': 6.6.1
+      typescript: 4.9.5
+      vue: 3.4.26_typescript@4.9.5
+      vue-demi: 0.14.7_vue@3.4.26
+    dev: false
 
   /postcss-selector-parser/6.0.16:
     resolution: {integrity: sha512-A0RVJrX+IUkVZbW3ClroRWurercFhieevHB38sr2+l9eUClMqome3LmEmnhlNy+5Mr2EYN6B2Kaw9wYdd+VHiw==}
